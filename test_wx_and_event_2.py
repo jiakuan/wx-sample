@@ -8,26 +8,10 @@ import icons
 
 import os
 
-from util import thread_util
 from util import user_event
 
 
-class IdleCheckerThread(thread_util.StoppableThread):
-    def __init__(self):
-        super(IdleCheckerThread, self).__init__()
-
-    def run(self):
-        while not self.stopped():
-            # the user is idle.
-
-            # Sleep for 2 minutes before next check
-            self.wait(2 * 60)
-
-        print "IdleCheckerThread is stopped."
-
-
 eventHandlingThread = user_event.EventHandlingThread()
-idleCheckerThread = IdleCheckerThread()
 
 
 class DemoTaskBarIcon(wx.TaskBarIcon):
@@ -112,13 +96,11 @@ def stopEventMonitor():
 def startAll():
     startEventMonitor()
     eventHandlingThread.start()
-    idleCheckerThread.start()
 
 
 def stopAll():
     stopEventMonitor()
     eventHandlingThread.stop()
-    idleCheckerThread.stop()
 
 
 class MainFrame(wx.Frame):
